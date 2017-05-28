@@ -8,6 +8,12 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
+namespace {
+    const int kTimeColumn = 0;
+    const int kTagColumn  = 1;
+    const int kLogColumn  = 2;
+}
+
 LogsDataModel::~LogsDataModel()
 {
 }
@@ -50,7 +56,7 @@ int LogsDataModel::columnCount(const QModelIndex &parent) const
     if (parent.isValid()) {
         return 0;
     }
-    return 3;
+    return kLogColumn + 1;
 }
 
 QVariant LogsDataModel::data(const QModelIndex &index, int role) const
@@ -61,13 +67,13 @@ QVariant LogsDataModel::data(const QModelIndex &index, int role) const
 
     auto entry = m_data.at(index.row());
     switch (index.column()) {
-    case 0: {
+    case kTimeColumn: {
         auto timeText = entry.time.toString("HH:mm:ss.zzz");
         return timeText;
     }
-    case 1:
+    case kTagColumn:
         return entry.tag;
-    case 2:
+    case kLogColumn:
         return entry.text;
     }
     return {};
@@ -81,11 +87,11 @@ QVariant LogsDataModel::headerData(int section, Qt::Orientation orientation, int
 
     if (orientation != Qt::Vertical) {
         switch (section) {
-        case 0:
+        case kTimeColumn:
             return tr("Time");
-        case 1:
+        case kTagColumn:
             return tr("Tag");
-        case 2:
+        case kLogColumn:
             return tr("Log");
         }
     } else {
@@ -121,7 +127,7 @@ void LogsDataModel::ProcessLine(const QString &line, int lineNumber, const LogsF
             endInsertRows();
         }
         m_data.back().text.append('\n').append(line);
-        auto changedIndex = this->index(2, m_data.size() - 1);
+        auto changedIndex = this->index(kLogColumn, m_data.size() - 1);
         dataChanged(changedIndex, changedIndex, { Qt::DisplayRole });
     }
 }
