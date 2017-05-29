@@ -15,7 +15,7 @@ public:
     ~LogsDataModel();
     explicit LogsDataModel(QObject *parent = nullptr);
 
-    void LoadLogs(const QString &fileName, const LogsFormatConfiguration &config);
+    bool LoadLogs(const QString &fileName, const LogsFormatConfiguration &config);
     void LoadLogs(QIODevice * device, const LogsFormatConfiguration &config);
 
     auto rowCount(const QModelIndex &parent) const -> int;

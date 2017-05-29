@@ -9,9 +9,13 @@
 #include <QJsonObject>
 
 namespace {
-    const int kTimeColumn = 0;
-    const int kTagColumn  = 1;
-    const int kLogColumn  = 2;
+enum Columns {
+    kTimeColumn,
+    kTagColumn,
+    kLogColumn,
+
+    kColumntCount
+};
 }
 
 LogsDataModel::~LogsDataModel()
@@ -24,12 +28,14 @@ LogsDataModel::LogsDataModel(QObject *parent)
     m_data.reserve(0x100000);
 }
 
-void LogsDataModel::LoadLogs(const QString &fileName, const LogsFormatConfiguration &config)
+bool LogsDataModel::LoadLogs(const QString &fileName, const LogsFormatConfiguration &config)
 {
     QFile file(fileName);
     if (file.open(QFile::ReadOnly)) {
         LoadLogs(&file, config);
+        return true;
     }
+    return false;
 }
 
 void LogsDataModel::LoadLogs(QIODevice *device, const LogsFormatConfiguration &config)
@@ -56,7 +62,7 @@ int LogsDataModel::columnCount(const QModelIndex &parent) const
     if (parent.isValid()) {
         return 0;
     }
-    return kLogColumn + 1;
+    return kColumntCount;
 }
 
 QVariant LogsDataModel::data(const QModelIndex &index, int role) const
@@ -73,9 +79,11 @@ QVariant LogsDataModel::data(const QModelIndex &index, int role) const
     }
     case kTagColumn:
         return entry.tag;
+
     case kLogColumn:
         return entry.text;
     }
+
     return {};
 }
 
@@ -128,6 +136,7 @@ void LogsDataModel::ProcessLine(const QString &line, int lineNumber, const LogsF
         }
         m_data.back().text.append('\n').append(line);
         auto changedIndex = this->index(kLogColumn, m_data.size() - 1);
-        dataChanged(changedIndex, changedIndex, { Qt::DisplayRole });
+
+        emit dataChanged(changedIndex, changedIndex, { Qt::DisplayRole });
     }
 }

@@ -4,6 +4,7 @@
 
 #include <QSortFilterProxyModel>
 #include <QFileDialog>
+#include <QErrorMessage>
 #include <QSettings>
 #include <QDebug>
 #include <QRegExp>
@@ -48,7 +49,7 @@ void MainWindow::on_actionLoad_Config_triggered()
         if (newConfig.loadFromJsonFileWithName(files.first())) {
             m_logConfig = newConfig;
         } else {
-
+            QErrorMessage::qtHandler()->showMessage(tr("Failed to load config file: %1").arg(files.first()));
         }
     }
 }
@@ -65,7 +66,9 @@ void MainWindow::on_actionAppendLogs_triggered()
     if (dialog.exec()) {
         auto files = dialog.selectedFiles();
         for (const auto fileName : files) {
-            m_logModel->LoadLogs(fileName, m_logConfig);
+            if (!m_logModel->LoadLogs(fileName, m_logConfig)) {
+                QErrorMessage::qtHandler()->showMessage(tr("Failed to open file: %1").arg(fileName));
+            }
         }
 
         settings.setValue(lastDirKey, dialog.directory().absolutePath());
