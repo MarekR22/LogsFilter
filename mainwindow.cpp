@@ -26,6 +26,9 @@ MainWindow::MainWindow(QWidget *parent) :
     m_proxy->setFilterKeyColumn(2);
     ui->tableView->setModel(m_proxy);
 
+    connect(ui->actionClearLogs, &QAction::triggered,
+            m_logModel, &LogsDataModel::clear);
+
     connect(ui->filterLineEdit, &QLineEdit::textChanged,
             this, &MainWindow::updateProxyFilter);
 

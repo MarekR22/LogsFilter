@@ -110,6 +110,16 @@ QVariant LogsDataModel::headerData(int section, Qt::Orientation orientation, int
     return {};
 }
 
+void LogsDataModel::clear()
+{
+    if (m_data.empty()) {
+        return;
+    }
+    beginRemoveRows({}, 0, m_data.size() - 1);
+    m_data.clear();
+    endRemoveRows();
+}
+
 void LogsDataModel::ProcessLine(const QString &line, int lineNumber, const LogsFormatConfiguration &config)
 {
     if (line.isEmpty()) {

@@ -49,6 +49,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionAppendLogs"/>
+   <addaction name="actionClearLogs"/>
    <addaction name="actionLoad_Config"/>
    <addaction name="actionCaseSensitiveFilter"/>
    <addaction name="actionRegExpFilter"/>
@@ -78,6 +79,11 @@
    </property>
    <property name="text">
     <string>Filter by regular expretion</string>
+   </property>
+  </action>
+  <action name="actionClearLogs">
+   <property name="text">
+    <string>Clear Logs</string>
    </property>
   </action>
  </widget>

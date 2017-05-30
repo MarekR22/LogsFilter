@@ -26,6 +26,7 @@ public:
 signals:
 
 public slots:
+    void clear();
 
 private:
     void ProcessLine(const QString &line, int lineNumber, const LogsFormatConfiguration &config);
