@@ -33,6 +33,8 @@ private slots:
 
     void on_actionRegExpFilter_toggled(bool arg1);
 
+    void on_actionChangeLogsTimeZone_triggered();
+
 private:
     static void removeRegularExpresionEscape(QString &filterText);
 

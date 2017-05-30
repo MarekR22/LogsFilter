@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "logsdatamodel.h"
+#include "timezonetool.h"
 
 #include <QSortFilterProxyModel>
 #include <QFileDialog>
@@ -8,6 +9,7 @@
 #include <QSettings>
 #include <QDebug>
 #include <QRegExp>
+#include <QInputDialog>
 
 MainWindow::~MainWindow()
 {
@@ -111,5 +113,15 @@ void MainWindow::on_actionRegExpFilter_toggled(bool useRE)
     } else {
         removeRegularExpresionEscape(filterText);
         ui->filterLineEdit->setText(filterText);
+    }
+}
+
+void MainWindow::on_actionChangeLogsTimeZone_triggered()
+{
+    bool ok = false;
+    auto hoursShift = QInputDialog::getDouble(this, tr("Time zone"), tr("UTC +number of hours"), 0, -12, +12, 2, &ok);
+    if (ok) {
+        auto timeZone = TimeZoneTool::timeZoneFromTimeShift(hoursShift);
+        m_logModel->changeTimeZone(timeZone);
     }
 }

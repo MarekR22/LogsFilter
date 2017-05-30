@@ -16,11 +16,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     logsdatamodel.cpp \
-    logsformatconfiguration.cpp
+    logsformatconfiguration.cpp \
+    timezonetool.cpp
 
 HEADERS  += mainwindow.h \
     logsdatamodel.h \
-    logsformatconfiguration.h
+    logsformatconfiguration.h \
+    timezonetool.h
 
 FORMS    += mainwindow.ui
 

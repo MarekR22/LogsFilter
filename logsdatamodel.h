@@ -26,6 +26,7 @@ public:
 signals:
 
 public slots:
+    void changeTimeZone(const QTimeZone &timeZone);
     void clear();
 
 private:

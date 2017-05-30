@@ -7,6 +7,7 @@
 #include <QDebug>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QTimeZone>
 
 namespace {
 enum Columns {
@@ -74,7 +75,8 @@ QVariant LogsDataModel::data(const QModelIndex &index, int role) const
     auto entry = m_data.at(index.row());
     switch (index.column()) {
     case kTimeColumn: {
-        auto timeText = entry.time.toString("HH:mm:ss.zzz");
+        auto localTime = entry.time.toLocalTime();
+        auto timeText = localTime.toString("HH:mm:ss.zzz");
         return timeText;
     }
     case kTagColumn:
@@ -108,6 +110,20 @@ QVariant LogsDataModel::headerData(int section, Qt::Orientation orientation, int
         }
     }
     return {};
+}
+
+void LogsDataModel::changeTimeZone(const QTimeZone &timeZone)
+{
+    if (m_data.isEmpty()) {
+        return;
+    }
+
+    for (LogEntry &entry : m_data) {
+        entry.time.setTimeZone(timeZone);
+    }
+    auto from = index(0, kTimeColumn);
+    auto to   = index(m_data.size() - 1, kTimeColumn);
+    emit dataChanged(from, to, { Qt::DisplayRole });
 }
 
 void LogsDataModel::clear()

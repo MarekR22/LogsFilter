@@ -53,6 +53,7 @@
    <addaction name="actionLoad_Config"/>
    <addaction name="actionCaseSensitiveFilter"/>
    <addaction name="actionRegExpFilter"/>
+   <addaction name="actionChangeLogsTimeZone"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionAppendLogs">
@@ -79,6 +80,11 @@
    </property>
    <property name="text">
     <string>Filter by regular expretion</string>
+   </property>
+  </action>
+  <action name="actionChangeLogsTimeZone">
+   <property name="text">
+    <string>Logs Time Zone</string>
    </property>
   </action>
   <action name="actionClearLogs">
