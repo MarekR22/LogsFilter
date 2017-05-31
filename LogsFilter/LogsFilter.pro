@@ -1,9 +1,3 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2017-05-26T21:22:25
-#
-#-------------------------------------------------
-
 QT       += core gui
 CONFIG   += C++11
 
@@ -27,5 +21,5 @@ HEADERS  += mainwindow.h \
 FORMS    += mainwindow.ui
 
 DISTFILES += \
-    acwinconfiguration.json \
-    acmacconfiguration.json
+    configs/acwinconfiguration.json \
+    configs/acmacconfiguration.json

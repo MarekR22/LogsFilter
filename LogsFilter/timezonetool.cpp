@@ -14,12 +14,12 @@ QTimeZone TimeZoneTool::timeZoneFromString(const QString &s)
 
     auto possibleZones = QTimeZone::availableTimeZoneIds();
 
-    auto zoneNameArray = s.toLower().toUtf8();
-
     auto matchedIanald = std::find_if(possibleZones.begin(), possibleZones.end(),
-                                      [zoneNameArray](const QByteArray &ianald) {
-        auto asString = QString::fromUtf8(ianald);
-        return asString.endsWith(zoneNameArray, Qt::CaseInsensitive);
+                                      [s](const QByteArray &ianald) {
+        auto rightLen = ianald.size() - ianald.lastIndexOf('/') - 1;
+        auto asString = QString::fromUtf8(ianald.right(rightLen));
+        asString.replace('_', ' ');
+        return asString.endsWith(s, Qt::CaseInsensitive);
     });
 
     if (matchedIanald != possibleZones.end()) {
