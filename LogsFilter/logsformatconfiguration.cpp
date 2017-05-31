@@ -19,11 +19,7 @@ LogsFormatConfiguration::~LogsFormatConfiguration()
 }
 
 LogsFormatConfiguration::LogsFormatConfiguration()
-    : m_entryFirstLineRE { kDefaultRE }
-    , m_timeCaptureIndex { kDefaultTimeCaptureIndex }
-    , m_tagsCaptureIndex { kDefaultTagCaptureIndex }
-    , m_textCaptureIndex { kDefaultLogTextCaptureIndex }
-    , m_timeFormat       { kDefaultTimeFormat }
+    : m_mainRegExp { kDefaultRE }
 {
 }
 
@@ -70,25 +66,32 @@ bool LogsFormatConfiguration::loadFromJson(const QJsonDocument &jsonDoc)
 
 bool LogsFormatConfiguration::loadFromJson(const QJsonObject &jsonObject)
 {
-    QJsonValue jsonMainRegExp = jsonObject.value("startEntryRegExp");
-    QJsonValue jsonTimeFormat = jsonObject.value("timeFormat");
-    QJsonValue jsonReCaptureTime = jsonObject.value("timeCaptureIndex");
+    QJsonValue jsonMainRegExp = jsonObject.value("regExp");
+    QJsonValue jsonColumns    = jsonObject.value("columns");
 
-    if (!jsonMainRegExp.isString() || !jsonTimeFormat.isString() || !jsonReCaptureTime.isDouble()) {
-        qDebug() << "Obligatory json values are missing: "
-                 << jsonMainRegExp.isString() << jsonTimeFormat.isString() << jsonReCaptureTime.isDouble();
+    if (!jsonMainRegExp.isString()) {
+        qDebug() << "regExp string is missing";
         return false;
     }
+
+    if (!jsonColumns.isObject()) {
+        qDebug() << "columns object is missing";
+        return false;
+    }
+
     auto entryFirstLineRE = QRegularExpression { jsonMainRegExp.toString() };
     if (!entryFirstLineRE.isValid()) {
-        qDebug() << "Invalid reguler expresion";
+        qDebug() << "Invalid reguler expresion in regExp";
         return false;
     }
-    m_entryFirstLineRE = entryFirstLineRE;
-    m_timeFormat = jsonTimeFormat.toString(kDefaultTimeFormat);
-    m_timeCaptureIndex = jsonReCaptureTime.toInt(kDefaultTimeCaptureIndex);
-    m_tagsCaptureIndex = jsonObject.value("tagCaptureIndex").toInt(kDefaultTagCaptureIndex);
-    m_textCaptureIndex = jsonObject.value("logTextCaptureIndex").toInt(kDefaultLogTextCaptureIndex);
+
+    auto columnsObject = jsonColumns.toObject();
+    for (auto valueRef : columnsObject) {
+        if (!valueRef.isObject()) {
+            qDebug() << "columns object is missing";
+            return false;
+        }
+    }
 
     return true;
 }

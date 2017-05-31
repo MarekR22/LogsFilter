@@ -1,7 +1,20 @@
 {
-    "startEntryRegExp" : "(\\d+-\\d+-\\d+ \\d+:\\d{2}:\\d{2}.\\d{3}) \\[(\\w+)\\]\\s*(.*)",
-    "timeFormat" : "yyyy-MM-dd HH:mm:ss.zzz",
-    "timeCaptureIndex" : 1,
-    "tagCaptureIndex" : 2,
-    "logTextCaptureIndex" : 3
+    "regExp" : "(\\d+-\\d+-\\d+ \\d+:\\d{2}:\\d{2}.\\d{3}) \\[(\\w+)\\]\\s*(.*)",
+    "columns" : {
+        1 : {
+            "title" : "time",
+            "timeFormat" : "yyyy-MM-dd HH:mm:ss.zzz"
+        },
+
+        2 : {
+            "title" : "tag",
+            colors : {
+                "" : "red"
+            }
+        },
+
+        3 : {
+            "title" : "log"
+        }
+    }
 }

@@ -1,7 +1,21 @@
 {
-    "startEntryRegExp" : "(\\d+-\\d+-\\d+ *\\d+:\\d+:\\d+:\\d{3}) (\\[[\\w.-]+](?: \\[\\w+\\])*)\\s+(.*)",
-    "timeFormat" : "yyyy-MM-dd HH:mm:ss:zzz",
-    "timeCaptureIndex" : 1,
-    "tagCaptureIndex" : 2,
-    "logTextCaptureIndex" : 3
+    "regExp" : "(\\d+-\\d+-\\d+ *\\d+:\\d+:\\d+:\\d{3}) (\\[[\\w.-]*](?: \\[\\w*\\])*)\\s+(.*)",
+    "columns" : {
+        "1" : {
+            "timeFormat" : "yyyy-MM-dd HH:mm:ss:zzz"
+        },
+
+        "2" : {
+            "title" : "tag",
+            "colors" : {
+                "[com.apple.root.default-qos.overcommit]" : "blue",
+                "[main]" : "green",
+                "[]" : "red"
+            }
+        },
+
+        "3" : {
+            "title" : "log"
+        }
+    }
 }

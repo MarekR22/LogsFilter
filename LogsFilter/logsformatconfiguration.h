@@ -1,9 +1,41 @@
 #ifndef LOGSFORMATCONFIGURATION_H
 #define LOGSFORMATCONFIGURATION_H
 
-#include<QRegularExpression>
+#include <QRegularExpression>
+#include <QVector>
 
 QT_FORWARD_DECLARE_CLASS(QIODevice)
+
+class ColumnConfiguration
+{
+public:
+    ColumnConfiguration(const QJsonObject& object);
+
+    QString Title() const {
+        return m_title;
+    }
+
+    int captureIndex() const {
+        return m_capture;
+    }
+
+private:
+    QString m_title;
+    int m_capture;
+};
+
+class TimeColumnConfiguration : public ColumnConfiguration
+{
+public:
+    TimeColumnConfiguration(const QJsonObject& object);
+
+    QString TimeFormat() const {
+        return m_dateFormat;
+    }
+
+private:
+    QString m_dateFormat;
+};
 
 class LogsFormatConfiguration
 {
@@ -17,37 +49,14 @@ public:
     bool loadFromJson(const QJsonDocument &jsonDoc);
     bool loadFromJson(const QJsonObject   &jsonObject);
 
-    QRegularExpression entryFirstLineRegExp() const
+    QRegularExpression mainRegExp() const
     {
-        return m_entryFirstLineRE;
-    }
-
-    int timeCaptureIndex() const
-    {
-        return m_timeCaptureIndex;
-    }
-
-    int tagsCaptureIndex() const
-    {
-        return m_tagsCaptureIndex;
-    }
-
-    int textCaptureIndex() const
-    {
-        return m_textCaptureIndex;
-    }
-
-    QString timeFormat() const
-    {
-        return m_timeFormat;
+        return m_mainRegExp;
     }
 
 private:
-    QRegularExpression m_entryFirstLineRE;
-    int m_timeCaptureIndex;
-    int m_tagsCaptureIndex;
-    int m_textCaptureIndex;
-    QString m_timeFormat;
+    QRegularExpression m_mainRegExp;
+    QVector<ColumnConfiguration> m_Columns;
 };
 
 #endif // LOGSFORMATCONFIGURATION_H

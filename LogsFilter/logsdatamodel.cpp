@@ -141,14 +141,14 @@ void LogsDataModel::ProcessLine(const QString &line, int lineNumber, const LogsF
     if (line.isEmpty()) {
         return;
     }
-    auto result = config.entryFirstLineRegExp().match(line);
+    auto result = config.mainRegExp().match(line);
 
     if (result.hasMatch()) {
         LogEntry entry {
             lineNumber,
-            QDateTime::fromString(result.captured(config.timeCaptureIndex()), config.timeFormat()),
-            result.captured(config.tagsCaptureIndex()),
-            result.captured(config.textCaptureIndex())
+//            QDateTime::fromString(result.captured(config.timeCaptureIndex()), config.timeFormat()),
+//            result.captured(config.tagsCaptureIndex()),
+//            result.captured(config.textCaptureIndex())
         };
         auto newRow = m_data.size();
         beginInsertRows({}, newRow, newRow);
